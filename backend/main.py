@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
 import os
-import shutil
 import uuid
+import tempfile
 
 # Services
 from services.document_parser import parse_document
@@ -20,9 +20,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 llm_engine = TranslationEngine()
 
@@ -46,22 +43,26 @@ async def upload_file(
 ):
     try:
         session_id = str(uuid.uuid4())
-        session_dir = os.path.join(UPLOAD_DIR, session_id)
-        os.makedirs(session_dir, exist_ok=True)
         
-        file_path = os.path.join(session_dir, file.filename)
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-            
         ext = file.filename.split('.')[-1].lower()
         extracted_text = ""
         print(f"Handling upload for {file.filename} (detected extension: {ext})")
         
+        file_bytes = await file.read()
+        
         # 1. Parsing Document or Transcribing Media
         if ext in ['pdf', 'pptx', 'txt']:
-            extracted_text = parse_document(file_path, ext)
+            extracted_text = parse_document(file_bytes, ext)
         elif ext in ['mp3', 'wav', 'm4a', 'mp4', 'mkv', 'webm', 'mov']:
-            extracted_text = transcribe_audio_video(file_path)
+            with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as temp_file:
+                temp_file.write(file_bytes)
+                temp_file_path = temp_file.name
+                
+            try:
+                extracted_text = transcribe_audio_video(temp_file_path)
+            finally:
+                if os.path.exists(temp_file_path):
+                    os.remove(temp_file_path)
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported file format: {ext}")
             

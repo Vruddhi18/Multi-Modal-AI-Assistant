@@ -1,28 +1,28 @@
 import PyPDF2
 from pptx import Presentation
-import os
+import io
 
-def parse_document(file_path: str, ext: str) -> str:
+def parse_document(file_bytes: bytes, ext: str) -> str:
     text = ""
     try:
         if ext == 'pdf':
-            with open(file_path, 'rb') as f:
-                reader = PyPDF2.PdfReader(f)
-                for page in reader.pages:
-                    extracted = page.extract_text()
-                    if extracted:
-                        text += extracted + "\n"
+            pdf_file = io.BytesIO(file_bytes)
+            reader = PyPDF2.PdfReader(pdf_file)
+            for page in reader.pages:
+                extracted = page.extract_text()
+                if extracted:
+                    text += extracted + "\n"
         elif ext == 'pptx':
-            prs = Presentation(file_path)
+            pptx_file = io.BytesIO(file_bytes)
+            prs = Presentation(pptx_file)
             for slide in prs.slides:
                 for shape in slide.shapes:
                     if hasattr(shape, "text"):
                         text += shape.text + "\n"
         elif ext == 'txt':
-            with open(file_path, 'r', encoding='utf-8') as f:
-                text = f.read()
+            text = file_bytes.decode('utf-8')
     except Exception as e:
-        print(f"Error parsing document {file_path}: {e}")
+        print(f"Error parsing document: {e}")
         raise e
         
     return text
