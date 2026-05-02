@@ -1,37 +1,55 @@
-import React, { useState } from 'react';
-import Uploader from './components/Uploader';
-import TranslationView from './components/TranslationView';
-import ChatBox from './components/ChatBox';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import LandingPage from './pages/LandingPage';
+import Dashboard from './pages/Dashboard';
+import TranslatorPage from './pages/TranslatorPage';
 import './index.css';
 
-function App() {
-  const [sessionData, setSessionData] = useState(null);
-  const [targetLang, setTargetLang] = useState('English');
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <Navigate to="/" />;
+  return children;
+};
 
+function AppContent() {
   return (
-    <div className="app-container">
-      <header>
-        <h1>Universal AI Translator</h1>
-        <p className="subtitle">Secure local AI processing for Documents and Media</p>
-      </header>
-      
-      <main className="main-content">
-        <section className="left-panel">
-          <Uploader 
-            onUploadSuccess={setSessionData} 
-            targetLang={targetLang} 
-            setTargetLang={setTargetLang} 
+    <div className="app-layout">
+      <Navbar />
+      <div className="app-main">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
           />
-          {sessionData && (
-            <TranslationView sessionData={sessionData} />
-          )}
-        </section>
-        
-        <section className="right-panel">
-          <ChatBox sessionData={sessionData} targetLang={targetLang} />
-        </section>
-      </main>
+          <Route 
+            path="/translate" 
+            element={
+              <ProtectedRoute>
+                <TranslatorPage />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
+      </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   );
 }
 
