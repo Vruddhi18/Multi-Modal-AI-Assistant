@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Send } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function ChatBox({ sessionData, targetLang }) {
   const [messages, setMessages] = useState([
@@ -29,7 +29,7 @@ export default function ChatBox({ sessionData, targetLang }) {
       setMessages(prev => [...prev, { role: 'bot', text: res.data.response }]);
     } catch (err) {
       console.error(err);
-      setMessages(prev => [...prev, { role: 'bot', text: 'Sorry, an error occurred communicating with Llama.' }]);
+      setMessages(prev => [...prev, { role: 'bot', text: 'Sorry, an error occurred communicating with the server.' }]);
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export default function ChatBox({ sessionData, targetLang }) {
         ))}
         {loading && (
           <div className="chat-message bot pulsing" style={{opacity: 0.7}}>
-            Llama is typing...
+            Thinking...
           </div>
         )}
       </div>
