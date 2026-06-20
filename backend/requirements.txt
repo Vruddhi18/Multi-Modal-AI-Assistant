@@ -20,8 +20,8 @@ chromadb==1.5.8
 PyPDF2==3.0.1
 python-pptx==1.0.2
 
-# Whisper (transcription)
-openai-whisper==20250625
+# Whisper (transcription) — handled via Groq's hosted API now (see transcription.py)
+groq
 
 # YouTube download
 yt-dlp==2025.10.14
