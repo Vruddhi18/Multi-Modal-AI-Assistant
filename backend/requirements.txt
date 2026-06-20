@@ -19,12 +19,16 @@ chromadb==1.5.8
 # Document parsing
 PyPDF2==3.0.1
 python-pptx==1.0.2
+python-docx==1.1.2
+openpyxl==3.1.5
+Pillow==11.1.0
+pytesseract==0.3.13
 
 # Whisper (transcription) — handled via Groq's hosted API now (see transcription.py)
 groq
 
 # YouTube download
-yt-dlp==2025.10.14
+yt-dlp>=2025.10.14
 
 # Utils
 httpx==0.28.1

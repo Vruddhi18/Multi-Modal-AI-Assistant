@@ -30,6 +30,10 @@ def process_youtube(url: str) -> str:
         }
     }
 
+    cookies_path = os.environ.get("YT_COOKIES_PATH")
+    if cookies_path and os.path.exists(cookies_path):
+        ydl_opts['cookiefile'] = cookies_path
+
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=True)

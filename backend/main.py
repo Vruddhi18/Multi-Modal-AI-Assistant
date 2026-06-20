@@ -51,7 +51,7 @@ async def upload_file(
         file_bytes = await file.read()
         
         # 1. Parsing Document or Transcribing Media
-        if ext in ['pdf', 'pptx', 'txt']:
+        if ext in ['pdf', 'pptx', 'docx', 'csv', 'xlsx', 'png', 'jpg', 'jpeg', 'bmp', 'tiff', 'webp', 'txt']:
             extracted_text = parse_document(file_bytes, ext)
         elif ext in ['mp3', 'wav', 'm4a', 'mp4', 'mkv', 'webm', 'mov']:
             with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as temp_file:
