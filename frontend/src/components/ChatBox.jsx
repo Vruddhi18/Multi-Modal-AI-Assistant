@@ -29,7 +29,7 @@ export default function ChatBox({ sessionData, targetLang }) {
       setMessages(prev => [...prev, { role: 'bot', text: res.data.response }]);
     } catch (err) {
       console.error(err);
-      setMessages(prev => [...prev, { role: 'bot', text: 'Sorry, an error occurred communicating with the server.' }]);
+      setMessages(prev => [...prev, { role: 'bot', text: "Sorry, something went wrong on that one — please try again." }]);
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,7 @@ export default function ChatBox({ sessionData, targetLang }) {
 
   return (
     <div className="panel" style={{height: '100%'}}>
-      <div className="panel-header">Contextual Q&A (Llama 3.1)</div>
+      <div className="panel-header">Ask about this content</div>
       
       <div className="chat-history">
         {messages.map((msg, i) => (

@@ -11,7 +11,7 @@ export default function TranslatorPage() {
     <div className="page-container fade-in">
       <header className="page-header">
         <h2>Workspace</h2>
-        <p className="subtitle">Secure local AI processing for Documents and Media</p>
+        <p className="subtitle">Upload a document or media file, then translate and ask questions about it</p>
       </header>
       
       <main className="main-content">

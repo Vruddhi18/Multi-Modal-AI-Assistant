@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check local storage for mocked session
     const savedUser = localStorage.getItem('mock_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -18,12 +17,11 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const loginWithGoogle = () => {
-    // Mock a Google Login response
     const mockUser = {
       id: 'g_' + Math.random().toString(36).substr(2, 9),
       name: 'Test User',
       email: 'user@example.com',
-      avatar: 'https://ui-avatars.com/api/?name=Test+User&background=3b82f6&color=fff'
+      avatar: 'https://ui-avatars.com/api/?name=Test+User&background=ec6a3c&color=fff'
     };
     setUser(mockUser);
     localStorage.setItem('mock_user', JSON.stringify(mockUser));

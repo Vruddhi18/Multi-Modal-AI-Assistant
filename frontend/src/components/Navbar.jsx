@@ -16,8 +16,8 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="nav-brand">
         <Link to="/" className="logo-link">
-          <div className="logo-mark">U</div>
-          <span className="logo-text">Universal AI</span>
+          <div className="logo-mark">世</div>
+          <span className="logo-text">Universal</span>
         </Link>
       </div>
 

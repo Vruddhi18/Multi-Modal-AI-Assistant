@@ -27,7 +27,7 @@ export default function Uploader({ onUploadSuccess, targetLang }) {
       onUploadSuccess(res.data);
     } catch (err) {
       console.error(err);
-      setError('Upload failed. Please check that the backend is running.');
+      setError('Upload failed. Please try again in a moment.');
     } finally {
       setLoading(false);
     }
