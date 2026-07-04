@@ -338,6 +338,8 @@ a { text-decoration: none; color: inherit; }
   font-size: 0.85rem;
   color: var(--rust);
   padding-top: 0.2rem;
+  grid-column: 1;
+  grid-row: 1 / span 2;
 }
 
 .features-grid { counter-reset: feature; }
@@ -348,6 +350,7 @@ a { text-decoration: none; color: inherit; }
   font-weight: 500;
   margin-bottom: 0.6rem;
   color: var(--paper);
+  grid-column: 2;
 }
 
 .feature-card p {
@@ -355,6 +358,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 0.96rem;
   line-height: 1.65;
   max-width: 560px;
+  grid-column: 2;
 }
 
 /* Dashboard */
